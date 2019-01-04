@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Class-Path: tomcat-servlet-api-8.5.34.jar commons-dbcp-1.4.jar alipay-
+ sdk-java-3.3.0.jar alipay-trade-sdk-20161215.jar junit-4.12.jar commo
+ ns-pool-1.5.4.jar
+Main-Class: 
+

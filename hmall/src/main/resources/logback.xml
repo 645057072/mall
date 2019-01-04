@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeruiod="60 seconds" debug="false">
+    <!-- 控制台输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoding>UTF-8</encoding>
+        <encoder>
+            <!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} 耗时：%r 日志来自：%logger{50} 日志类型: %-5p 日志内容：%m%n</pattern>-->
+            <pattern>[@d{HH:mm:ss:SSS}][%P][%c{40}][%t] %m%n</pattern>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>DEBUG</level>
+            </filter>
+        </encoder>
+    </appender>
+    <!-- 按照每天生成日志文件 -->
+    <appender name="hmall" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出的文件名 -->
+        <file>D:/Java/apache-tomcat-8.5.34/logs/hmall.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/Java/apache-tomcat-8.5.34/logs/hmall.log.%{yyyy-mm-dd}.gz</fileNamePattern>
+            <append>true</append>
+            <!--日志文件保留天数 -->
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>[@d{HH:mm:ss:SSS}][%P][%c{40}][%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>D:/Java/apache-tomcat-8.5.34/logs/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/Java/apache-tomcat-8.5.34/logs/error.log.%{yyyy-mm-dd}.gz</fileNamePattern>
+            <append>true</append>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[@d{HH:mm:ss:SSS}][%P][%c{40}][%t] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <logger name="com.hmall" additivity="false" level="INFO">
+        <appender-ref ref="hmall"></appender-ref>
+        <appender-ref ref="console"></appender-ref>
+    </logger>
+
+                <!--geelynote mybatis log 日志-->
+    <logger name="com.hmall.dao" level="DEBUG"></logger>
+    <root level="DEBUG">
+        <appender-ref ref="console"></appender-ref>
+
+        <appender-ref ref="error"></appender-ref>
+    </root>
+    </configuration>

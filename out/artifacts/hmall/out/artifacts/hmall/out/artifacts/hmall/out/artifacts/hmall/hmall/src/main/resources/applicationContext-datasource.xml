@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+      >
+
+    <context:component-scan base-package="com.hmall" annotation-config="true"></context:component-scan>
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="order" value="2"></property>
+        <property name="ignoreUnresolvablePlaceholders" value="true"></property>
+        <property name="locations">
+            <list>
+                <value>classpath:dataresource.properties</value>
+            </list>
+        </property>
+        <property name="fileEncoding" value="UTF-8"></property>
+    </bean>
+
+    <bean id="datasource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${db.driverClassName}"></property>
+        <property name="url" value="${db.url}"></property>
+        <property name="username" value="${db.username}"></property>
+        <property name="password" value="${db.password}"></property>
+        <!--连接池启动时的初始值-->
+        <property name="initialSize" value="${db.initialSize}"></property>
+        <!--连接池的最大值-->
+        <property name="maxActive" value="${db.maxActive}"></property>
+        <!--最大空闲值，当经过一给高峰时间后，连接池可以慢慢释放一部分已经用不到的连接，一直减少到maxIdle为止-->
+        <property name="maxIdle" value="${db.maxIdle}"></property>
+        <!--最小空闲值，当空闲的连接数少于阈值时，连接池就会预申请去一些连接，以免洪峰来时来不及申请-->
+        <property name="minIdle" value="${db.minIdle}"></property>
+        <!--最大建立连接等待时间，如果超过此时间将接到异常，设为-1表示无限制-->
+        <property name="maxWait" value="${db.maxWait}"></property>
+
+        <property name="defaultAutoCommit" value="${db.defaultAutoCommit}"></property>
+        <!--连接的超时时间，默认为半小时-->
+        <property name="minEvictableIdleTimeMillis" value="${db.minEvictableIdleTimeMillis}"></property>
+     </bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="datasource"></property>
+        <property name="mapperLocations" value="classpath:mappers/CategoryMapper.xml"></property>
+
+        <!--分页插件-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <value>
+                            dialect=mysql
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+      <!--dao层接口扫描-->
+    <bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.hmall.dao"></property>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactinManager" proxy-target-class="true"></tx:annotation-driven>
+    <bean id="transactinManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="datasource"></property>
+        <property name="rollbackOnCommitFailure" value="true"></property>
+    </bean>
+</beans>

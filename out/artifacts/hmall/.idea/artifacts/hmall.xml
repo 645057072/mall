@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="hmall">
+    <output-path>$PROJECT_DIR$/out/artifacts/hmall</output-path>
+    <root id="root">
+      <element id="dir-copy" path="$PROJECT_DIR$" />
+    </root>
+  </artifact>
+</component>

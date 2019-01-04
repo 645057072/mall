@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="hmall:war">
+    <output-path>$PROJECT_DIR$/hmall/target</output-path>
+    <root id="archive" name="hmall.war">
+      <element id="artifact" artifact-name="hmall:war exploded" />
+    </root>
+  </artifact>
+</component>
