@@ -90,5 +90,14 @@ public class Const {
         public int getCode() {
             return code;
         }
+
+        public static PayPlatformEnum codeof(int code){
+            for(PayPlatformEnum payPlatformEnum:values()){
+                if (payPlatformEnum.getCode()==code){
+                    return payPlatformEnum;
+                }
+            }
+            throw new RuntimeException("没有找到对应的枚举");
+        }
     }
 }

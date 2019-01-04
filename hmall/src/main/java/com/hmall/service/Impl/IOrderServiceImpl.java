@@ -22,6 +22,8 @@ import com.hmall.unit.BigDecimalUtil;
 import com.hmall.unit.DateTimeUtil;
 import com.hmall.unit.FTPUtil;
 import com.hmall.unit.PropertieUitl;
+import com.hmall.vo.Orderitemvo;
+import com.hmall.vo.Ordervo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -80,9 +82,15 @@ public class IOrderServiceImpl implements IOrderService {
         //生成成功检验库存
         this.reduceProductStock(orderitemList);
 //        清空购物车
-
         this.cloneCart(cartList);
         return ServiceResponse.createByErrorMessage("");
+    }
+    private void assembleOrdervo(Order order, List<Orderitemvo> orderitemvoList){
+        Ordervo ordervo=new Ordervo();
+        ordervo.setOrderNo(order.getOrderNo());
+        order.setPayment(order.getPayment());
+        ordervo.setPaymentType(order.getPaymentType());
+        ordervo.setPaymentTypeDesc(Const.PayPlatformEnum.codeof(order.getPaymentType()).getValue());
     }
     private void cloneCart( List<Cart> cartList){
         for (Cart cart:cartList){
