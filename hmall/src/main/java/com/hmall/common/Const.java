@@ -65,6 +65,15 @@ public class Const {
         public int getCode() {
             return code;
         }
+
+        public static OrderStatusenum codeof(int code){
+            for(OrderStatusenum orderStatusenum:values()){
+                if (orderStatusenum.getCode()==code){
+                    return orderStatusenum;
+                }
+            }
+            throw new RuntimeException("没有找到对应的枚举");
+        }
     }
 
     public interface alipaycallback{

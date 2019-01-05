@@ -34,8 +34,17 @@ public class Ordervo {
 //    收件人信息
     private String imageHost;
     private Integer shippingId;
-
+    private String  receiverName;
     private Shippingvo shippingvo;
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+
 
     public String getPaymentTypeDesc() {
         return paymentTypeDesc;

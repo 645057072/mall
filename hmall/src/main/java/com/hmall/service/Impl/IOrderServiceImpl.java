@@ -24,6 +24,7 @@ import com.hmall.unit.FTPUtil;
 import com.hmall.unit.PropertieUitl;
 import com.hmall.vo.Orderitemvo;
 import com.hmall.vo.Ordervo;
+import com.hmall.vo.Shippingvo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -56,6 +57,9 @@ public class IOrderServiceImpl implements IOrderService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private ShippingMapper shippingMapper;
     public ServiceResponse create(Integer userId,Integer shippingId){
         List<Cart> cartList=cartMapper.selectCartByuserId(userId);
 
@@ -85,12 +89,34 @@ public class IOrderServiceImpl implements IOrderService {
         this.cloneCart(cartList);
         return ServiceResponse.createByErrorMessage("");
     }
-    private void assembleOrdervo(Order order, List<Orderitemvo> orderitemvoList){
+    private Ordervo assembleOrdervo(Order order, List<Orderitemvo> orderitemvoList){
         Ordervo ordervo=new Ordervo();
         ordervo.setOrderNo(order.getOrderNo());
-        order.setPayment(order.getPayment());
+        ordervo.setPayment(order.getPayment());
         ordervo.setPaymentType(order.getPaymentType());
         ordervo.setPaymentTypeDesc(Const.PayPlatformEnum.codeof(order.getPaymentType()).getValue());
+        ordervo.setPostage(order.getPostage());
+        ordervo.setStatus(order.getStatus());
+        ordervo.setStatusDesc(Const.OrderStatusenum.codeof(order.getStatus()).getValue());
+        ordervo.setPayment(order.getPayment());
+        ordervo.setShippingId(order.getShippingId());
+        Shipping shipping=shippingMapper.selectByPrimaryKey(order.getShippingId());
+        if(shipping!=null){
+            ordervo.setReceiverName(shipping.getReceiverName());
+            ordervo.setShippingvo(assembleShippingvo(shipping));
+        }
+    }
+    private Shippingvo assembleShippingvo(Shipping shipping){
+        Shippingvo shippingvo=new Shippingvo();
+        shippingvo.setReceiverName(shipping.getReceiverName());
+        shippingvo.setReceiverPhone(shipping.getReceiverPhone());
+        shippingvo.setReceiverMobile(shipping.getReceiverMobile());
+        shippingvo.setReceiverProvince(shipping.getReceiverProvince());
+        shippingvo.setReceiverAddress(shipping.getReceiverAddress());
+        shippingvo.setReceiverCity(shipping.getReceiverCity());
+        shippingvo.setReceiverDistrict(shipping.getReceiverDistrict());
+        shippingvo.setReceiverZip(shipping.getReceiverZip());
+        return shippingvo;
     }
     private void cloneCart( List<Cart> cartList){
         for (Cart cart:cartList){
