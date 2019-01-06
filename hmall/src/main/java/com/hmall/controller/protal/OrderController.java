@@ -38,7 +38,7 @@ public class OrderController {
         if(user==null){
             return ServiceResponse.createByErrorCodeMessgae(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return ServiceResponse.createBySuccess();
+        return iOrderService.create(user.getId(),shippingId);
     }
 
 

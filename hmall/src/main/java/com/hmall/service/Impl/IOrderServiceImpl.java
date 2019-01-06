@@ -87,9 +87,10 @@ public class IOrderServiceImpl implements IOrderService {
         this.reduceProductStock(orderitemList);
 //        清空购物车
         this.cloneCart(cartList);
-        return ServiceResponse.createByErrorMessage("");
+       Ordervo ordervo=assembleOrdervo(order,orderitemList);
+        return ServiceResponse.createBySuccess(ordervo);
     }
-    private Ordervo assembleOrdervo(Order order, List<Orderitemvo> orderitemvoList){
+    private Ordervo assembleOrdervo(Order order, List<Orderitem> orderitemList){
         Ordervo ordervo=new Ordervo();
         ordervo.setOrderNo(order.getOrderNo());
         ordervo.setPayment(order.getPayment());
@@ -105,6 +106,31 @@ public class IOrderServiceImpl implements IOrderService {
             ordervo.setReceiverName(shipping.getReceiverName());
             ordervo.setShippingvo(assembleShippingvo(shipping));
         }
+       ordervo.setPaymentTime(DateTimeUtil.dateTostr(order.getPaymentTime()));
+        ordervo.setSendTime(DateTimeUtil.dateTostr(order.getSendTime()));
+        ordervo.setEndTime(DateTimeUtil.dateTostr(order.getEndTime()));
+        ordervo.setCreateTime(DateTimeUtil.dateTostr(order.getCreateTime()));
+        ordervo.setUpdateTime(DateTimeUtil.dateTostr(order.getUpdateTime()));
+        ordervo.setImageHost(PropertieUitl.getProperty("ftp.server.http.prefix"));
+        List<Orderitemvo> orderitemvoList = Lists.newArrayList();
+        for(Orderitem orderitem:orderitemList){
+            Orderitemvo orderitemvo=assembleOrderitemvo(orderitem);
+            orderitemvoList.add(orderitemvo);
+        }
+        return ordervo;
+    }
+
+    private Orderitemvo assembleOrderitemvo(Orderitem orderitem){
+        Orderitemvo orderitemvo=new Orderitemvo();
+        orderitemvo.setOrderNo(orderitem.getOrderNo());
+        orderitemvo.setProductId(orderitem.getProductId());
+        orderitemvo.setProductName(orderitem.getProductName());
+        orderitemvo.setProductImage(orderitem.getProductImage());
+        orderitemvo.setQuantity(orderitem.getQuantity());
+        orderitemvo.setCurrentUnitPrice(orderitem.getCurrentUnitPrice());
+        orderitemvo.setTotalPrice(orderitem.getTotalPrice());
+        orderitemvo.setCreateTime(DateTimeUtil.dateTostr(orderitem.getCreateTime()));
+        return orderitemvo;
     }
     private Shippingvo assembleShippingvo(Shipping shipping){
         Shippingvo shippingvo=new Shippingvo();
