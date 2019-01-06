@@ -208,7 +208,7 @@
     and id=#{shippingId}
   </select>
 
-  <select id="selectByUserId" resultType="map" parameterType="int">
+  <select id="selectByUserId" resultType="com.hmall.pojo.Shipping" parameterType="int">
     select
     <include refid="Base_Column_List"></include>
     from mmall_shipping
