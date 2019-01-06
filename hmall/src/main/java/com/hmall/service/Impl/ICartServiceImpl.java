@@ -91,7 +91,7 @@ public class ICartServiceImpl implements ICartService {
     }
     private Cartvo getCaritvolimit(Integer userId){
         Cartvo cartvo=new Cartvo();
-        List<Cart> cartlist=cartMapper.selectCartByuserId(userId);
+        List<Cart> cartlist=cartMapper.selectByCheckedUserId(userId);
         List<Cartproductvo> cartproductvoList= Lists.newArrayList();//将cartproductvo添加到cartvo中
 
         BigDecimal cartTotalPrice=new BigDecimal("0");

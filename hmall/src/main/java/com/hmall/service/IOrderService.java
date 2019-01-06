@@ -10,4 +10,6 @@ public interface IOrderService {
     ServiceResponse alicallback(Map<String,String> params);
     ServiceResponse queryOrderPayStatus(Integer userId,Long orderNo);
     ServiceResponse create(Integer userId,Integer shippingId);
+    ServiceResponse<String> cancel(Integer userId,Long orderNo);
+    ServiceResponse getOrderCartProduct(Integer userId);
 }

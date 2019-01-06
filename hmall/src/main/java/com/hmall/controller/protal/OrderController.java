@@ -40,9 +40,25 @@ public class OrderController {
         }
         return iOrderService.create(user.getId(),shippingId);
     }
+    @RequestMapping("cancel.do")
+    @ResponseBody
+    public ServiceResponse cancel(HttpSession session, Long orderNo){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if(user==null){
+            return ServiceResponse.createByErrorCodeMessgae(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iOrderService.cancel(user.getId(),orderNo);
+    }
 
-
-
+    @RequestMapping("get_order_cart_product.do")
+    @ResponseBody
+    public ServiceResponse getOrderCartProduct(HttpSession session){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if(user==null){
+            return ServiceResponse.createByErrorCodeMessgae(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iOrderService.getOrderCartProduct(user.getId());
+    }
 
 
 
