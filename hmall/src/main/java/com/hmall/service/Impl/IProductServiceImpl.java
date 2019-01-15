@@ -19,6 +19,7 @@ import com.hmall.vo.ProductListvo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +135,7 @@ public class IProductServiceImpl implements IProductService {
         return productListvo;
     }
 
-    public ServiceResponse<PageInfo> searchProduct(String productName,Integer productId,int pageNum,int pageSize){
+    public ServiceResponse<PageInfo> searchProduct(String productName, Integer productId, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "15") int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         if(StringUtils.isNoneBlank(productName)){
             productName=new StringBuilder().append("%").append(productName).append("%").toString();
