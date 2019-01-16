@@ -38,10 +38,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Service("iOrderService")
 public class IOrderServiceImpl implements IOrderService {
@@ -166,12 +163,36 @@ public class IOrderServiceImpl implements IOrderService {
         Order order=orderMapper.selectByOrderNo(orderNo);
         if (order!=null){
             List<Orderitem> orderitemList=orderitemMapper.getByOrderNo(orderNo);
-            Ordervo ordervo=this.assembleOrdervo(order,orderitemList);
+            Ordervo ordervo=assembleOrdervo(order,orderitemList);
             return ServiceResponse.createBySuccess(ordervo);
         }
         return ServiceResponse.createByErrorMessage("没有找到该订单");
     }
+    public ServiceResponse<Ordervo> SeachOrder(Long orderNo,int pageNum, int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        Order order=orderMapper.selectByOrderNo(orderNo);
+        if (order!=null){
+            List<Orderitem> orderitemList=orderitemMapper.getByOrderNo(orderNo);
+            Ordervo ordervo=assembleOrdervo(order,orderitemList);
+            PageInfo pageResult=new PageInfo(Lists.newArrayList(order));
+            pageResult.setList(Lists.newArrayList(ordervo));
+            return ServiceResponse.createBySuccess();
+        }
+        return ServiceResponse.createByErrorMessage("没有找到该订单");
+    }
 
+    public ServiceResponse<String> SendGoods(Long orderNo){
+        Order order=orderMapper.selectByOrderNo(orderNo);
+        if (order!=null){
+            if (order.getStatus()==Const.OrderStatusenum.PAID.getCode()){
+                order.setStatus(Const.OrderStatusenum.SHIPPED.getCode());
+                order.setSendTime(new Date());
+                orderMapper.updateByPrimaryKeySelective(order);
+                return ServiceResponse.createBySuccess("发货成功");
+            }
+        }
+        return ServiceResponse.createByErrorMessage("该订单不存在");
+    }
     private List<Ordervo> assembleOrderVoList(List<Order> orderList,Integer userId){
         List<Ordervo> ordervoList=Lists.newArrayList();
         for (Order order:orderList){

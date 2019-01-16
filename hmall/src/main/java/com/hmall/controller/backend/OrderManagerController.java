@@ -46,7 +46,6 @@ public class OrderManagerController {
 
     @RequestMapping("detail")
     @ResponseBody
-
     public ServiceResponse<Ordervo> orderdetail(HttpSession session,Long orderNo){
         User user=(User)session.getAttribute(Const.CURRENT_USER);
         if (user==null){
@@ -57,5 +56,33 @@ public class OrderManagerController {
         }else{
             return ServiceResponse.createByErrorMessage("该用户无权限操作");
         }
+    }
+
+    @RequestMapping("searchorder")
+    @ResponseBody
+    public ServiceResponse<Ordervo> searchorder(HttpSession session,Long orderNo,@RequestParam(value = "pageNum",defaultValue = "1")
+            int pageNum, @RequestParam(value = "pageSize",defaultValue = "15") int pageSize){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if (user==null){
+            return ServiceResponse.createByErrorCodeMessgae(ResponseCode.NEED_LOGIN.getCode(),"用户未登录");
+        }
+        if (iUserService.checkAdmin(user).isSucess()){
+            return iOrderService.SeachOrder(orderNo,pageNum,pageSize);
+        }else{
+            return ServiceResponse.createBySuccessMessage("该用户无权限操作");
+        }
+    }
+
+    @RequestMapping("send_goods")
+    @ResponseBody
+    public ServiceResponse<String> sendgoods(HttpSession session,Long orderNo){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if (user==null){
+            return ServiceResponse.createByErrorCodeMessgae(ResponseCode.NEED_LOGIN.getCode(),"用户未登录");
+        }
+        if (iUserService.checkAdmin(user).isSucess()){
+            return iOrderService.SendGoods(orderNo);
+        }
+        return ServiceResponse.createBySuccessMessage("该用户无权限操作");
     }
 }

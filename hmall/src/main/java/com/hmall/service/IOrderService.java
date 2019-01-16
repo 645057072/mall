@@ -21,4 +21,6 @@ public interface IOrderService {
 //    backend
     ServiceResponse<PageInfo> ManegerList(int pageNum, int pageSize);
     ServiceResponse<Ordervo> ManagerDetail(Long orderNo);
+    ServiceResponse<Ordervo> SeachOrder(Long orderNo,int pageNum, int pageSize);
+    ServiceResponse<String> SendGoods(Long orderNo);
 }
