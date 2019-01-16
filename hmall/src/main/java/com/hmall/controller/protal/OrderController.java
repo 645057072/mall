@@ -4,7 +4,6 @@ package com.hmall.controller.protal;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.demo.trade.config.Configs;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.hmall.common.Const;
 import com.hmall.common.ResponseCode;
@@ -12,7 +11,6 @@ import com.hmall.common.ServiceResponse;
 import com.hmall.pojo.User;
 import com.hmall.service.IOrderService;
 import com.hmall.vo.Ordervo;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +137,11 @@ public class OrderController {
 
     @RequestMapping("get_order_list")
     @ResponseBody
-    public ServiceResponse<PageInfo> getOrderList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "15") int pageSize){
-
+    public ServiceResponse getOrderList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "15") int pageSize){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if (user==null){
+            return ServiceResponse.createByErrorCodeMessgae(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iOrderService.getOrderList(user.getId(),pageNum,pageSize);
     }
 }
