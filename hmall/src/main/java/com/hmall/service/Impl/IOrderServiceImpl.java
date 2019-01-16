@@ -151,16 +151,36 @@ public class IOrderServiceImpl implements IOrderService {
         PageInfo pageResult=new PageInfo(orderList);
         pageResult.setList(ordervoList);
         return ServiceResponse.createBySuccess(pageResult);
-
     }
+//BACKEND
+    public ServiceResponse<PageInfo> ManegerList(int pageNum, int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        List<Order> orderList=orderMapper.selectByAll();
+        List<Ordervo> ordervoList=this.assembleOrderVoList(orderList,null);
+        PageInfo pageResult=new PageInfo(orderList);
+        pageResult.setList(ordervoList);
+        return ServiceResponse.createBySuccess(pageResult);
+    }
+
+    public ServiceResponse<Ordervo> ManagerDetail(Long orderNo){
+        Order order=orderMapper.selectByOrderNo(orderNo);
+        if (order!=null){
+            List<Orderitem> orderitemList=orderitemMapper.getByOrderNo(orderNo);
+            Ordervo ordervo=this.assembleOrdervo(order,orderitemList);
+            return ServiceResponse.createBySuccess(ordervo);
+        }
+        return ServiceResponse.createByErrorMessage("没有找到该订单");
+    }
+
     private List<Ordervo> assembleOrderVoList(List<Order> orderList,Integer userId){
         List<Ordervo> ordervoList=Lists.newArrayList();
         for (Order order:orderList){
             List<Orderitem> orderitemList=Lists.newArrayList();
             if(userId==null){
                 //todo.管理员查询，不需要用户ID
+                orderitemList=orderitemMapper.getByOrderNo(order.getOrderNo());
             }else {
-           orderitemList=orderitemMapper.getByOrderNoUserId(order.getOrderNo(),userId);
+                orderitemList=orderitemMapper.getByOrderNoUserId(order.getOrderNo(),userId);
             }
             Ordervo ordervo=assembleOrdervo(order,orderitemList);
             ordervoList.add(ordervo);

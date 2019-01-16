@@ -16,4 +16,9 @@ public interface IOrderService {
     ServiceResponse getOrderCartProduct(Integer userId);
     ServiceResponse<Ordervo> getOrderdetail(Integer userId, Long orderNo);
     ServiceResponse<PageInfo> getOrderList(Integer userId, int pageNum, int pageSize);
+
+
+//    backend
+    ServiceResponse<PageInfo> ManegerList(int pageNum, int pageSize);
+    ServiceResponse<Ordervo> ManagerDetail(Long orderNo);
 }
