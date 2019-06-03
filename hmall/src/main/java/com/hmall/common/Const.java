@@ -8,6 +8,12 @@ public class Const {
     public static final String CURRENT_USER="currentuser";
     public static final String USERNAME="username";
     public static final String EMIAL="emial";
+
+
+    public interface RedisCacheExtime{
+        int REDIS_SESSION_EXTIME=30*60;//redis过期时间设置session30分钟。按秒记录、
+    }
+
     public interface Role{
         int ROLE_CUSTOMER=0;
         int ROLE_ADMIN=1;
@@ -75,6 +81,8 @@ public class Const {
             throw new RuntimeException("没有找到对应的枚举");
         }
     }
+
+
 
     public interface alipaycallback{
         String TRADE_STATUS_WAIT_BUYER_PAY="WAIT_BUYER_PAY";//等待买家付款
