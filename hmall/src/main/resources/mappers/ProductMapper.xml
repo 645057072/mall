@@ -118,7 +118,7 @@
         now(),
       </if>
       <if test="updateTime != null" >
-        now(),
+        now()
       </if>
     </trim>
   </insert>
