@@ -30,6 +30,7 @@ public class CookieUtil {
         Cookie cookie=new Cookie(COOKIE_NAME,token);
         cookie.setDomain(COOKIE_DOMAIN);
         cookie.setPath("/");
+        cookie.setHttpOnly(true);//防止使用脚本攻击
 //        单位秒
 //        如果不写时间话，代表不会写入硬盘，只存在内存中
        cookie.setMaxAge(60*60*24*365);// 如果是-1代表永久

@@ -8,6 +8,7 @@ import com.hmall.service.IUserService;
 import com.hmall.unit.CookieUtil;
 import com.hmall.unit.JsonUtil;
 import com.hmall.unit.RedisPoolUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ public class UserController {
 * */
     @RequestMapping(value = "login.do",method= RequestMethod.POST)
     @ResponseBody
-   public ServiceResponse<User> login(String username, String password, HttpSession session, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest){
+   public ServiceResponse<User> login(String username, String password, HttpSession session, HttpServletResponse httpServletResponse){
 //        service
         ServiceResponse<User> response=iUserService.login(username,password);
         if (response.isSucess()){
@@ -45,8 +46,11 @@ public class UserController {
     @RequestMapping(value = "login_out.do",method= RequestMethod.POST)
     @ResponseBody
     //    退出用户登录
-    public ServiceResponse<User> loginOut(HttpSession session){
-        session.removeAttribute(Const.CURRENT_USER);
+    public ServiceResponse<User> loginOut(HttpServletResponse httpServletResponse,HttpServletRequest httpServletRequest){
+        String loginToken=CookieUtil.readLoginToken(httpServletRequest);
+        CookieUtil.delLoginToken(httpServletResponse,httpServletRequest);
+        RedisPoolUtil.del(loginToken);
+//        session.removeAttribute(Const.CURRENT_USER);
         return ServiceResponse.createBySuccess();
     }
     @RequestMapping(value = "register.do",method= RequestMethod.POST)
@@ -64,8 +68,14 @@ public class UserController {
     @RequestMapping(value = "get_user_info.do",method= RequestMethod.POST)
     @ResponseBody
     //获取用户登录信息
-    public ServiceResponse<User> getUserInfo(HttpSession session){
-        User user=(User) session.getAttribute(Const.CURRENT_USER);
+    public ServiceResponse<User> getUserInfo(HttpServletRequest httpServletRequest){
+//        User user=(User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken=CookieUtil.readLoginToken(httpServletRequest);
+        if (StringUtils.isEmpty(loginToken)){
+            return ServiceResponse.createByErrorMessage("用户未登录,无法获取当前用户信息");
+        }
+        String userJsonstr=RedisPoolUtil.get(loginToken);
+        User user=JsonUtil.string2Object(userJsonstr,User.class);
         if (user!=null){
             return ServiceResponse.createBySuccess(user);
         }
