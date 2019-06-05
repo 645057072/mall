@@ -23,7 +23,18 @@
     <filter-name>characterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  
+
+
+  <!--二期增加设置session的过期时间-->
+  <filter>
+    <filter-name>sessionExpireFilter</filter-name>
+    <filter-class>com.hmall.controller.common.SessionExpireFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>sessionExpireFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+
   <listener>
     <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
   </listener>
