@@ -14,4 +14,4 @@ hmall-learning
 
 
 2019-6-6
-1.使用Redis存储替换GUACAHCE,用于TOKEN管理TOKEN信息
+1.使用Redis存储替换GUAVACAHCE,用于TOKEN管理TOKEN信息
