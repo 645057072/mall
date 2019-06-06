@@ -11,3 +11,7 @@ hmall-learning
 1.增加CookieUtil用于单点登录，Cookie重写方法
 2.用户单点登录配置cookis，redis获取和删除TOKEN
 3.设置Session过期时间为30分钟
+
+
+2019-6-6
+1.使用Redis存储替换GUACAHCE,用于TOKEN管理TOKEN信息
