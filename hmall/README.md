@@ -15,3 +15,6 @@ hmall-learning
 
 2019-6-6
 1.使用Redis存储替换GUAVACAHCE,用于TOKEN管理TOKEN信息
+
+2019-6-7
+1.创建SHAREDJEDIS API替换JEDIS API实现REDIS分布式管理。

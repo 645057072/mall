@@ -1,17 +1,17 @@
 package com.hmall.service.Impl;
 
         import com.hmall.common.Const;
-        import com.hmall.common.ServiceResponse;
-        import com.hmall.common.TokenCache;
+import com.hmall.common.ServiceResponse;
         import com.hmall.dao.UserMapper;
-        import com.hmall.pojo.User;
-        import com.hmall.service.IUserService;
-        import com.hmall.unit.MD5Uitl;
-        import org.apache.commons.lang3.StringUtils;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.stereotype.Service;
+import com.hmall.pojo.User;
+import com.hmall.service.IUserService;
+import com.hmall.unit.MD5Uitl;
+import com.hmall.unit.RedisShardedPoolUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-        import java.util.UUID;
+import java.util.UUID;
 
 @Service("iUserService")
 public class IUserServiceImpl implements IUserService {
@@ -60,7 +60,7 @@ public class IUserServiceImpl implements IUserService {
 
     //用户和邮箱检验
     public ServiceResponse<String> checkValid(String str, String type){
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(type)){
+        if (StringUtils.isNotBlank(type)){
             if(Const.USERNAME.equals(type)){
                 int resultCount=userMapper.checkByUsername(str);
                 if(resultCount>0){
@@ -95,21 +95,23 @@ public class IUserServiceImpl implements IUserService {
         int resultCount=userMapper.checkAnswer(username,question,answer);
         if(resultCount>0){
           String forgetToken= UUID.randomUUID().toString();
-            TokenCache.setKey("token_"+username,forgetToken);
+//            设置TOKEN过期时间12个小时
+            RedisShardedPoolUtil.setex(forgetToken,Const.TOKEN_PREFIX+username,60*60*12);
             return ServiceResponse.createBySuccess(forgetToken);
         }
         return ServiceResponse.createByErrorMessage("问题答案错误");
     }
 
     public  ServiceResponse<String> forgetRestPassword(String username,String passwordNew,String forgetToken){
-        if(org.apache.commons.lang3.StringUtils.isBlank(forgetToken)){
+        if(StringUtils.isBlank(forgetToken)){
             return ServiceResponse.createByErrorMessage("参数错误，传递token失败");
         }
         ServiceResponse validResponse=this.checkValid(username,Const.CURRENT_USER);
         if(validResponse.isSucess()){
             return ServiceResponse.createByErrorMessage("用户不存在");
         }
-        String token=TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
+//
+        String token= RedisShardedPoolUtil.get(Const.TOKEN_PREFIX+username);
         if(StringUtils.isBlank(token)){
             return  ServiceResponse.createByErrorMessage("token失效");
         }
@@ -124,7 +126,7 @@ public class IUserServiceImpl implements IUserService {
         }
         return ServiceResponse.createByErrorMessage("修改密码失败");
     }
-
+//修改用户密码
     public ServiceResponse<String> restPassword(String passwordOld,String passwordNew,User user){
         int resultCount=userMapper.checkPassword(MD5Uitl.MD5EncodeUtf8(passwordOld),user.getId());
         if(resultCount==0){

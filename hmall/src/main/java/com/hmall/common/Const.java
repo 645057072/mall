@@ -8,6 +8,7 @@ public class Const {
     public static final String CURRENT_USER="currentuser";
     public static final String USERNAME="username";
     public static final String EMIAL="emial";
+    public static final String TOKEN_PREFIX="token_";
 
 
     public interface RedisCacheExtime{

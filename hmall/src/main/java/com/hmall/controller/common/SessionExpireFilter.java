@@ -4,7 +4,7 @@ import com.hmall.common.Const;
 import com.hmall.pojo.User;
 import com.hmall.unit.CookieUtil;
 import com.hmall.unit.JsonUtil;
-import com.hmall.unit.RedisPoolUtil;
+import com.hmall.unit.RedisShardedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
@@ -25,11 +25,11 @@ public class SessionExpireFilter implements Filter {
 //            查询TOKEN信息不为空
 //                    再根据TOKEN转换成json
 
-            String userJsostr= RedisPoolUtil.get(loginToken);
+            String userJsostr= RedisShardedPoolUtil.get(loginToken);
             User user= JsonUtil.string2Object(userJsostr,User.class);
             if (user!=null){
 //                用户信息不为空时，设置SESSION的过期时间为30分钟
-                RedisPoolUtil.expire(loginToken, Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+                RedisShardedPoolUtil.expire(loginToken, Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             }
         }
 
