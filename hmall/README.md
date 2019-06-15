@@ -18,3 +18,6 @@ hmall-learning
 
 2019-6-7
 1.创建SHAREDJEDIS API替换JEDIS API实现REDIS分布式管理。
+
+2019-6-15
+1.增加全局异常处理，将HTTP请求的异常交给EXCEPTINRESOLVER类进行处理。

@@ -65,9 +65,10 @@
     <bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.hmall.dao"></property>
     </bean>
-    <tx:annotation-driven transaction-manager="transactinManager" proxy-target-class="true"></tx:annotation-driven>
-    <bean id="transactinManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="datasource"></property>
-        <property name="rollbackOnCommitFailure" value="true"></property>
-    </bean>
+    <!--一期事务管理-->
+    <!--<tx:annotation-driven transaction-manager="transactinManager" proxy-target-class="true"></tx:annotation-driven>-->
+    <!--<bean id="transactinManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+        <!--<property name="dataSource" ref="datasource"></property>-->
+        <!--<property name="rollbackOnCommitFailure" value="true"></property>-->
+    <!--</bean>-->
 </beans>
