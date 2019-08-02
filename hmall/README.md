@@ -21,3 +21,6 @@ hmall-learning
 
 2019-6-15
 1.增加全局异常处理，将HTTP请求的异常交给EXCEPTINRESOLVER类进行处理。
+
+2019-8-2
+1.SpringMVC 拦截器实现权限统一校验

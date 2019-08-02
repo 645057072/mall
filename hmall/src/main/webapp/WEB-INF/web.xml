@@ -26,12 +26,20 @@
 
 
   <!--二期增加设置session的过期时间-->
+  <!--<filter>-->
+    <!--<filter-name>sessionExpireFilter</filter-name>-->
+    <!--<filter-class>com.hmall.controller.common.SessionExpireFilter</filter-class>-->
+  <!--</filter>-->
+  <!--<filter-mapping>-->
+    <!--<filter-name>sessionExpireFilter</filter-name>-->
+    <!--<url-pattern>*.do</url-pattern>-->
+  <!--</filter-mapping>-->l
   <filter>
-    <filter-name>sessionExpireFilter</filter-name>
-    <filter-class>com.hmall.controller.common.SessionExpireFilter</filter-class>
+    <filter-name>springSessionRepostityFilter</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>sessionExpireFilter</filter-name>
+    <filter-name>springSessionRepostityFilter</filter-name>
     <url-pattern>*.do</url-pattern>
   </filter-mapping>
 

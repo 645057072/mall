@@ -35,4 +35,11 @@
         <property name="maxInMemorySize" value="4096"></property>
         <property name="defaultEncoding" value="UTF-8"></property>
     </bean>
+    
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/manager/**"/>
+            <bean class="com.hmall.controller.interceptor.AuthorityInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>
