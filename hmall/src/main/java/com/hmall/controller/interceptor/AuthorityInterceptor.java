@@ -47,6 +47,13 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                 mapValue= Arrays.toString(strings);
             }
             requestParamBuffer.append(mapKey).append("=").append(mapValue);
+
+            if (StringUtils.equals(className,"UserController")&&StringUtils.equals(methodName,"login")){
+                log.info("连接器拦截到请求参数，classNmae:{},methodName:{}",className,methodName);
+                return true;
+            }
+
+
             User user=null;
             String loginToken= CookieUtil.readLoginToken(request);
             if (StringUtil.isNotEmpty(loginToken)){
