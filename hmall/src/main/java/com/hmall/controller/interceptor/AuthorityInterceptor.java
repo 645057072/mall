@@ -60,7 +60,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                 String userJsonstr= RedisShardedPoolUtil.get(loginToken);
                 user= JsonUtil.string2Object(userJsonstr,User.class);
             }
-            if (user==null||user.getRole().intValue()!= Const.Role.ROLE_ADMIN){
+            if (user==null||(user.getRole().intValue()!= Const.Role.ROLE_ADMIN)){
 //                返回false，则不会调用controller
                 response.reset();
                 response.setCharacterEncoding("UTF-8");

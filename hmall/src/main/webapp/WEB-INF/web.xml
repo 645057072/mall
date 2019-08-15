@@ -35,11 +35,11 @@
     <!--<url-pattern>*.do</url-pattern>-->
   <!--</filter-mapping>-->l
   <filter>
-    <filter-name>springSessionRepostityFilter</filter-name>
+    <filter-name>springSessionRepositoryFilter</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>springSessionRepostityFilter</filter-name>
+    <filter-name>springSessionRepositoryFilter</filter-name>
     <url-pattern>*.do</url-pattern>
   </filter-mapping>
 
