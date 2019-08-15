@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scanPeruiod="60 seconds" scan="true">
     <property value="${CATALINA_HOME}/logs" name="LOG_HOME"></property>
     <!-- 控制台输出 -->
     <appender  class="ch.qos.logback.core.ConsoleAppender" name="console">
-        <!--<Encoding>UTF-8</Encoding>-->
+        <Encoding>UTF-8</Encoding>
         <encoder>
             <!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} 耗时：%r 日志来自：%logger{50} 日志类型: %-5p 日志内容：%m%n</pattern>-->
             <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>

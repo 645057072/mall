@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration  debug="false" scanPeruiod="60 seconds" scan="true">
     <property value="${CATALINA_HOME}/logs" name="LOG_HOME"></property>
     <!-- 控制台输出 -->
