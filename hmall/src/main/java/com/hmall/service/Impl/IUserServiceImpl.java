@@ -1,27 +1,29 @@
 package com.hmall.service.Impl;
 
-        import com.hmall.common.Const;
+import com.hmall.common.Const;
 import com.hmall.common.ServiceResponse;
-        import com.hmall.dao.UserMapper;
+import com.hmall.dao.UserMapper;
 import com.hmall.pojo.User;
 import com.hmall.service.IUserService;
 import com.hmall.unit.MD5Uitl;
 import com.hmall.unit.RedisShardedPoolUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-
+@Slf4j
 @Service("iUserService")
 public class IUserServiceImpl implements IUserService {
     @Autowired
     private UserMapper userMapper;
-    @Override
 
     //用户登录
+    @Override
     public ServiceResponse<User> login(String username, String password) {
         int resultCount=userMapper.checkByUsername(username);
+        log.error("resultCount={}","无法查询用户信息");
         if(resultCount==0){
             return ServiceResponse.createByErrorMessage("用户不存在");
         }

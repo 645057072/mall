@@ -30,7 +30,7 @@ public class UserController {
 *@param:password
 * param:session
 * */
-    @RequestMapping(value = "login.do",method= RequestMethod.POST)
+    @RequestMapping(value = "login.do",method= RequestMethod.GET)
     @ResponseBody
    public ServiceResponse<User> login(String username, String password, HttpSession session, HttpServletResponse httpServletResponse){
 //        service
