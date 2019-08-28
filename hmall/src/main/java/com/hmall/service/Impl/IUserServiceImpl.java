@@ -23,7 +23,6 @@ public class IUserServiceImpl implements IUserService {
     @Override
     public ServiceResponse<User> login(String username, String password) {
         int resultCount=userMapper.checkByUsername(username);
-        log.error("resultCount={}","无法查询用户信息");
         if(resultCount==0){
             return ServiceResponse.createByErrorMessage("用户不存在");
         }

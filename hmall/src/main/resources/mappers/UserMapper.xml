@@ -151,10 +151,10 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="checkByUsername" resultType="int" parameterType="string">
+  <select id="checkByUsername" parameterType="string" resultType="int" >
     select count(1) from mmall_user where username=#{username}
   </select>
-  <select id="selectLogin" parameterMap="map" resultMap="BaseResultMap">
+  <select id="selectLogin" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"></include>
     from mmall_user where

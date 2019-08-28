@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 public class MD5Uitl {
     private static String byteAraayToHexString(byte b[]){
         StringBuffer resultSb=new StringBuffer();
-        for(int i=0;i<resultSb.length();i++)
+        for(int i=0;i<b.length;i++)
             resultSb.append(byteToHexString(b[i]));
             return resultSb.toString();
     }
@@ -28,11 +28,13 @@ public class MD5Uitl {
                 resultString = byteAraayToHexString(messageDigest.digest(resultString.getBytes()));
             else
                 resultString = byteAraayToHexString(messageDigest.digest(resultString.getBytes(charsetname)));
+
         }catch (Exception e){}
         return resultString.toUpperCase();
         }
         public static String MD5EncodeUtf8(String origin){
+        origin=origin+PropertieUitl.getProperty("password.salt","");
         return MD5Encode(origin,"utf-8");
     }
-    private static final String hexDigits[]={"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g"};
+    private static final String hexDigits[]={"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"};
 }
